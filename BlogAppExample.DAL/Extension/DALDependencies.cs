@@ -15,7 +15,11 @@ public static class DALDependencies
     {
         services.AddDbContext<AppDbContext>(x => x.UseSqlServer(connectionString));
 
-        services.AddIdentity<AppUser, AppRole>()
+        services.AddIdentity<AppUser, AppRole>(x =>
+            {
+                x.User.RequireUniqueEmail = true;
+                x.SignIn.RequireConfirmedAccount = true;
+            })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 

@@ -1,13 +1,8 @@
 ﻿using BlogAppExample.BLL.Abstract;
 using BlogAppExample.DTO.EMailConfigs;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlogAppExample.BLL.Concrete
 {
@@ -33,7 +28,7 @@ namespace BlogAppExample.BLL.Concrete
 
                 smtpClient.Host = _option.ServiceEmailOption.Host;
                 smtpClient.Port = _option.ServiceEmailOption.Port;
-                smtpClient.Credentials = new NetworkCredential(_option.ServiceEmailOption.Email, _option.Password);
+                smtpClient.Credentials = new NetworkCredential(_option.ServiceEmailOption.Email, _option.ServiceEmailOption.Password);
 
                 var mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress(_option.ServiceEmailOption.Email);

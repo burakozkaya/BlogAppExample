@@ -1,4 +1,5 @@
 ﻿using BlogAppExample.BLL.Abstract;
+using BlogAppExample.BLL.ResponseConcrete;
 using BlogAppExample.DTO.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +19,10 @@ namespace BlogAppExample.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(AppUserRegisterDto appUserRegisterDto)
         {
-            var result = await _accountService.Register(appUserRegisterDto);
+            BlogAppExample.BLL.ResponseConcrete.Response result = new Response();
             if (ModelState.IsValid)
             {
+                result = await _accountService.Register(appUserRegisterDto);
                 if (result.IsSuccess)
                 {
                     return RedirectToAction("Login", "User");
@@ -43,9 +45,10 @@ namespace BlogAppExample.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(AppUserLoginDto appUserLoginDto)
         {
-            var result = await _accountService.Login(appUserLoginDto);
+            BlogAppExample.BLL.ResponseConcrete.Response result = new Response();
             if (ModelState.IsValid)
             {
+                result = await _accountService.Login(appUserLoginDto);
                 if (result.IsSuccess)
                 {
                     return RedirectToAction("Index", "Home");

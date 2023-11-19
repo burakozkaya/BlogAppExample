@@ -3,7 +3,6 @@ using BlogAppExample.DTO.Dtos;
 using BlogAppExample.Entity.Concrete;
 
 namespace BlogAppExample.BLL.MappingProfile;
-
 public class BLLMappingProfile : Profile
 {
     public BLLMappingProfile()

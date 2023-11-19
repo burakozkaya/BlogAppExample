@@ -12,9 +12,9 @@ public static class BLLDependencies
         service.AddAutoMapper(Assembly.GetExecutingAssembly());
         service.AddScoped(typeof(IBlogContentService), typeof(BlogContentManager));
         service.AddScoped(typeof(ICategoryService), typeof(CategoryManager));
-
+        service.AddScoped(typeof(IEmailService), typeof(EMailManager));
         service.AddScoped(typeof(IAccountService), typeof(AccountManager));
-        
+
 
     }
 }
