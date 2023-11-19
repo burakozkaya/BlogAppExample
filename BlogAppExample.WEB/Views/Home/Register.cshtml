@@ -1,0 +1,26 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AppUserRegisterDto
+@{
+    if (@ViewBag.IsSuccess!=null)
+    {
+        if (@ViewBag.IsSuccess)
+        {
+
+        <span class="badge bg-success">Başardın hımmına</span>
+        }
+        else
+        {
+            <span class="badge bg-danger">başaramadın hımmına</span>
+        }
+    }
+}
+<form asp-action="Register" method="post">
+    <input asp-for="Email"/>
+    <input asp-for="UserName"/>
+    <input asp-for="Password"/>
+    <input asp-for="Name"/>
+    <input asp-for="SurName"/>
+    <button type="submit">EklE</button>
+</form>
