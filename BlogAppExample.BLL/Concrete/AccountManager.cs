@@ -26,9 +26,9 @@ public class AccountManager : IAccountService
         var result = await _userManager.CreateAsync(tempUser, appUserRegisterDto.Password);
         if (result.Succeeded)
         {
-            return Response.Success("Kullanıcı Ekleme Başarılı");
+            return Response.Success("User registered successfully");
         }
-        return Response.Failure("Kullanıcı Eklemedi");
+        return Response.Failure(result.Errors);
     }
 
     public async Task<Response> Login(AppUserLoginDto appUserLoginDto)
@@ -39,11 +39,15 @@ public class AccountManager : IAccountService
             var result = await _signInManager.PasswordSignInAsync(appUser, appUserLoginDto.Password, appUserLoginDto.KeepMeLoggedIn,
                 false);
             if (result.Succeeded)
-            {
-                return Response.Success("Giriş Başarılı");
-            }
+                return Response.Success("Login successful");
+
+            if (result.IsLockedOut)
+                return Response.Failure("Your account has been locked");
+            if (result.IsNotAllowed)
+                return Response.Failure("Please confirm your email");
+
         }
-        return Response.Failure("Giriş Başarısız");
+        return Response.Failure("Login Failed");
     }
 
     public async Task<Response> Logout()

@@ -1,10 +1,13 @@
-﻿namespace BlogAppExample.BLL.ResponseConcrete;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace BlogAppExample.BLL.ResponseConcrete;
 
 
 public class Response
 {
     public bool IsSuccess { get; set; }
     public string Message { get; set; }
+    public IEnumerable<IdentityError> Errors { get; set; } = new List<IdentityError>();
 
     public static Response Success(string message = "")
     {
@@ -14,6 +17,10 @@ public class Response
     public static Response Failure(string message)
     {
         return new Response { IsSuccess = false, Message = message };
+    }
+    public static Response Failure(IEnumerable<IdentityError> errors)
+    {
+        return new Response { IsSuccess = false, Message = "Multiple errors", Errors = errors };
     }
 }
 
