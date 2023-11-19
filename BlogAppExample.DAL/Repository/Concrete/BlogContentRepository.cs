@@ -20,7 +20,7 @@ public class BlogContentRepository : GenericRepository<BlogContent>, IBlogConten
 
     public override IEnumerable<BlogContent> GetByPredicate(Expression<Func<BlogContent, bool>> predicate)
     {
-        return _dbSet
+        return _dbSet.Include(x => x.Category)
             .Where(predicate)
             .ToList();
     }
