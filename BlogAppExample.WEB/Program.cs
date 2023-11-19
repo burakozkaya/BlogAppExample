@@ -1,5 +1,6 @@
 using BlogAppExample.BLL.Extension;
 using BlogAppExample.DAL.Extension;
+using BlogAppExample.DTO.EMailConfigs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddControllersWithViews();
 var conString = builder.Configuration.GetConnectionString("DevConnectionString");
 builder.Services.AddDALDependencies(conString);
 builder.Services.AddBLLDependencies();
+builder.Services.Configure<EMailOption>(builder.Configuration.GetSection("EmailOption"));
 
 var app = builder.Build();
 
