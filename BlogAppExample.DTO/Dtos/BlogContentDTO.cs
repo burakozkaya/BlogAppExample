@@ -9,5 +9,6 @@ public class BlogContentDTO : IBaseDTO
     public string Content { get; set; }
     public DateTime CreatedDate { get; set; }
     public int CategoryId { get; set; }
-    public CategoryDTO CategoryDto { get; set; }
+    public string AppUserId { get; set; }
+    public CategoryDTO Category { get; set; }
 }

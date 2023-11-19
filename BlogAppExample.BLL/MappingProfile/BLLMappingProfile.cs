@@ -9,10 +9,10 @@ public class BLLMappingProfile : Profile
     public BLLMappingProfile()
     {
         CreateMap<Category, CategoryDTO>()
-            .ForMember(dest => dest.BlogContents, opt => opt.MapFrom(src => src.BlogContents))
             .ReverseMap();
 
-        CreateMap<BlogContent, BlogContentDTO>().ReverseMap();
+        CreateMap<BlogContent, BlogContentDTO>()
+            .ReverseMap();
 
         CreateMap<AppUserRegisterDto, AppUser>().ReverseMap();
     }
