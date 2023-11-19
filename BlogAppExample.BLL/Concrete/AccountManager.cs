@@ -113,7 +113,7 @@ public class AccountManager : IAccountService
         if (user == null) { return Response.Failure("User is not found"); }
 
         IdentityOptions options = new IdentityOptions();
-        var result = await _userManager.VerifyUserTokenAsync(user,options.Tokens.PasswordResetTokenProvider, UserManager<AppUser>.ResetPasswordTokenPurpose,token)
+        var result = await _userManager.VerifyUserTokenAsync(user, options.Tokens.PasswordResetTokenProvider, UserManager<AppUser>.ResetPasswordTokenPurpose, token);
 
             if (result) 
             {
@@ -127,10 +127,11 @@ public class AccountManager : IAccountService
       var user = await _userManager.FindByIdAsync(id);
         var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
         if (result.Succeeded) 
-        { 
-          await _userManager
+        {
+            return Response.Success("Reset password is complated");
         
         }
+        return Response.Failure("Error");
         
        
     
