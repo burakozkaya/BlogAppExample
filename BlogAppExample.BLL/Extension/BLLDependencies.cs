@@ -14,6 +14,7 @@ public static class BLLDependencies
         service.AddScoped(typeof(ICategoryService), typeof(CategoryManager));
 
         service.AddScoped(typeof(IAccountService), typeof(AccountManager));
+        
 
     }
 }
