@@ -10,7 +10,9 @@ public class UOW : IUOW, IDisposable
 {
     public IBlogContentRepo BlogContentRepo { get; }
     public ICategoryRepo CategoryRepo { get; }
+
     private AppDbContext _context;
+
     private bool disposed = false;
     public UOW(IBlogContentRepo blogContentRepo, ICategoryRepo categoryRepo, AppDbContext context)
     {

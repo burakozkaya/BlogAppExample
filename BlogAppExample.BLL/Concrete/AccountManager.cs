@@ -43,6 +43,12 @@ public class AccountManager : IAccountService
                 return Response.Success("Giriş Başarılı");
             }
         }
-        return Response.Failure("Kullanıcının amk");
+        return Response.Failure("Giriş Başarısız");
+    }
+
+    public async Task<Response> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return Response.Success();
     }
 }

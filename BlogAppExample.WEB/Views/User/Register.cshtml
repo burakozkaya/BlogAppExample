@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AppUserRegisterDto
+
+<form asp-action="Register" method="post" class="p-3">
+    @{
+        if (@ViewBag.IsSuccess != null)
+        {
+            if (@ViewBag.IsSuccess)
+            {
+                <span class="badge bg-success">@ViewBag.Message.ToString()</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">@ViewBag.Message.ToString()</span>
+            }
+        }
+    }
+    <div class="mb-3">
+        <label for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" placeholder="Enter email" />
+    </div>
+    <div class="mb-3">
+        <label for="UserName" class="form-label">Username</label>
+        <input asp-for="UserName" class="form-control" placeholder="Choose a username" />
+    </div>
+    <div class="mb-3">
+        <label for="Password" class="form-label">Password</label>
+        <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
+    </div>
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Enter your name" />
+    </div>
+    <div class="mb-3">
+        <label for="SurName" class="form-label">Surname</label>
+        <input asp-for="SurName" class="form-control" placeholder="Enter your surname" />
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
