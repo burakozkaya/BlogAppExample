@@ -123,7 +123,7 @@ public class AccountManager : IAccountService
 
     }
 
-    public async Task<Response> VerfyPasswordResetİnfo(string token, string id)
+    public async Task<Response> VerfyPasswordResetInfo(string token, string id)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user == null) { return Response.Failure("User is not found"); }
