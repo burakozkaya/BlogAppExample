@@ -2,6 +2,7 @@
 using BlogAppExample.DTO.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace BlogAppExample.WEB.Controllers
 {
@@ -29,6 +30,7 @@ namespace BlogAppExample.WEB.Controllers
         public IActionResult Insert(BlogContentDTO blogContentDto)
         {
             blogContentDto.CreatedDate = DateTime.Now;
+            blogContentDto.AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = _blogContentService.Insert(blogContentDto);
             if (result.IsSuccess)
                 ViewBag.IsSuccess = result.IsSuccess;

@@ -12,8 +12,8 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
     where T : class, IBaseEntity
     where TDto : class, IBaseDTO
 {
-    private readonly IMapper _mapper;
-    private readonly IUOW _uow;
+    protected readonly IMapper _mapper;
+    protected readonly IUOW _uow;
 
     public GenericManager(IMapper mapper, IUOW uow)
     {
@@ -27,11 +27,11 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
             var Tentity = _mapper.Map<T>(dto);
             _uow.GetRepository<T>().Insert(Tentity);
             _uow.SaveChanges();
-            return Response.Success("Ekleme işlemi başarıyla tamamlandı");
+            return Response.Success("Insert success");
         }
         catch (Exception ex)
         {
-            return Response.Failure("Ekleme işlemi yapılamadı");
+            return Response.Failure("Insert failed");
         }
     }
 
@@ -42,11 +42,11 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
             var Tentity = _mapper.Map<T>(dto);
             _uow.GetRepository<T>().Update(Tentity);
             _uow.SaveChanges();
-            return Response.Success("Güncelleme işlemi başarıyla tamamlandı");
+            return Response.Success("Update success");
         }
         catch (Exception ex)
         {
-            return Response.Failure("Güncelleme işlemi yapılamadı");
+            return Response.Failure("Update failed");
         }
     }
 
@@ -57,11 +57,11 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
             var Tentity = _mapper.Map<T>(dto);
             _uow.GetRepository<T>().Delete(Tentity);
             _uow.SaveChanges();
-            return Response.Success("Silme işlemi başarıyla tamamlandı");
+            return Response.Success("Delete success");
         }
         catch (Exception ex)
         {
-            return Response.Failure("Silme işlemi yapılamadı");
+            return Response.Failure("Delete failed");
         }
     }
 
@@ -71,15 +71,15 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
         {
             var Tentity = _uow.GetRepository<T>().GetById(id);
             var DtoEntity = _mapper.Map<TDto>(Tentity);
-            return Response<TDto>.Success(DtoEntity, "Silme işlemi başarıyla tamamlandı");
+            return Response<TDto>.Success(DtoEntity, "Data retrieved successfully");
         }
         catch (Exception ex)
         {
-            return Response<TDto>.Failure("Silme işlemi başarılı olmadı");
+            return Response<TDto>.Failure("Data retrieval failed");
         }
     }
 
-    public Response<IEnumerable<TDto>> GetByPredicate(Expression<Func<T, bool>> predicate)
+    public virtual Response<IEnumerable<TDto>> GetByPredicate(Expression<Func<T, bool>> predicate)
     {
         try
         {
@@ -89,11 +89,11 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
         }
         catch (Exception ex)
         {
-            return Response<IEnumerable<TDto>>.Failure("Data retrieval failed: " + ex.Message);
+            return Response<IEnumerable<TDto>>.Failure("Data retrieval failed");
         }
     }
 
-    public Response<IEnumerable<TDto>> GetAll()
+    public virtual Response<IEnumerable<TDto>> GetAll()
     {
         try
         {
@@ -103,7 +103,7 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
         }
         catch (Exception ex)
         {
-            return Response<IEnumerable<TDto>>.Failure("Data retrieval failed: " + ex.Message);
+            return Response<IEnumerable<TDto>>.Failure("Data retrieval failed");
         }
     }
 }

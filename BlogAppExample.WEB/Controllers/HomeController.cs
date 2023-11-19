@@ -10,14 +10,16 @@ namespace BlogAppExample.WEB.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBlogContentService _blogContentService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBlogContentService blogContentService)
         {
             _logger = logger;
+            _blogContentService = blogContentService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var blogs = _blogContentService.GetAll();
+            return View(blogs.Data);
         }
         public IActionResult Privacy()
         {
