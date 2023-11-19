@@ -97,8 +97,9 @@ namespace BlogAppExample.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> ForgetPassword(string email)
         {
+            //todo forget password'den sonra gidilcek yer ayarlancak
             var result = await _accountService.ForgetPassword(email);
-            return new EmptyResult();
+            return View();
         }
     }
 }

@@ -42,7 +42,7 @@ public class AccountManager : IAccountService
             var url = EmailConfirmLinkGenerator(token, userId);
             var html = GenerateAccountActivationEmail(url);
 
-            _emailService.SendEmail(appUserRegisterDto.Email, "Email Confirm", url);
+            _emailService.SendEmail(appUserRegisterDto.Email, "Email Confirm", html);
 
 
 
@@ -66,8 +66,8 @@ public class AccountManager : IAccountService
         var newToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var link = EmailConfirmLinkGenerator(newToken, user.Id);
         var html = GenerateAccountActivationEmail(link);
-
-        _emailService.SendEmail(user.Email, "Account Activation", link);
+        var url = GenerateAccountActivationEmail(html);
+        _emailService.SendEmail(user.Email, "Account Activation", url);
 
         return false;
 
@@ -122,7 +122,8 @@ public class AccountManager : IAccountService
 
         var ResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         var link = ResetPasswordLinkGenerator(ResetToken, user.Id);
-        _emailService.SendEmail(user.Email, "Refresh Password", link);
+        var url = GenerateAccountActivationEmail(link);
+        _emailService.SendEmail(user.Email, "Refresh Password", url);
         return Response.Success("Referesh is complated ");
 
     }
@@ -137,9 +138,9 @@ public class AccountManager : IAccountService
 
         if (result)
         {
-            return Response.Success("Operation successed");
+            return Response.Success("Operation success");
         }
-        else { return Response.Failure("Operation failled"); }
+        else { return Response.Failure("Operation failed"); }
     }
 
     public async Task<Response> ResetPassword(string newPassword, string id, string token)
@@ -148,7 +149,7 @@ public class AccountManager : IAccountService
         var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
         if (result.Succeeded)
         {
-            return Response.Success("Reset password is complated");
+            return Response.Success("Reset password is completed");
 
         }
         return Response.Failure("Error");
@@ -174,8 +175,8 @@ public class AccountManager : IAccountService
                     
                         <body>
 
-                                    <h2>HOŞGELDİN</h2>
-                            <a href = {url}> Plase onclik the link to activate Account </a>
+                                    <h2>Hello To BlogAPP</h2>
+                            <a href = {url}> Please click the link to activate Account </a>
                         </body>
     
     
@@ -192,8 +193,8 @@ public class AccountManager : IAccountService
                     
                         <body>
 
-                                    <h2>HOŞGELDİN</h2>
-                            <a href = {url}> Referesh Password </a>
+                                    <h2>Hello To BlogAPP</h2>
+                            <a href = {url}> Refresh Password </a>
                         </body>
     
     

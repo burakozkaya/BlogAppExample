@@ -37,7 +37,7 @@ namespace BlogAppExample.BLL.Concrete
                 mailMessage.To.Add(reciverEMailAdress);
                 mailMessage.Subject = subject;
                 mailMessage.Body = mailBody;
-                mailMessage.IsBodyHtml = false;
+                mailMessage.IsBodyHtml = true;
 
                 smtpClient.Send(mailMessage);
                 Console.WriteLine("mail başarılı");
