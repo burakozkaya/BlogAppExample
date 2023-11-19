@@ -15,6 +15,5 @@ public static class BLLDependencies
         service.AddScoped(typeof(IEmailService), typeof(EMailManager));
         service.AddScoped(typeof(IAccountService), typeof(AccountManager));
 
-
     }
 }

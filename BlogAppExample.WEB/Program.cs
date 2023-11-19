@@ -2,6 +2,8 @@ using BlogAppExample.BLL.Extension;
 using BlogAppExample.DAL.Extension;
 using BlogAppExample.DTO.EMailConfigs;
 using BlogAppExample.DTO.Extension;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,10 @@ var conString = builder.Configuration.GetConnectionString("DevConnectionString")
 builder.Services.AddDALDependencies(conString);
 builder.Services.AddBLLDependencies();
 builder.Services.Configure<EMailOption>(builder.Configuration.GetSection("EmailOption"));
+
+builder.Services.AddSingleton(typeof(IUrlHelperFactory), typeof(UrlHelperFactory));
+
+builder.Services.AddSingleton(typeof(IActionContextAccessor), typeof(ActionContextAccessor));
 builder.Services.AddDtoDependencies();
 
 var app = builder.Build();

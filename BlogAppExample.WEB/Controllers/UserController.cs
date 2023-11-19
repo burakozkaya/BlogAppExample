@@ -1,7 +1,6 @@
 ﻿using BlogAppExample.BLL.Abstract;
 using BlogAppExample.BLL.ResponseConcrete;
 using BlogAppExample.DTO.Dtos;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogAppExample.WEB.Controllers
@@ -69,9 +68,9 @@ namespace BlogAppExample.WEB.Controllers
             await _accountService.Logout();
             return RedirectToAction("Insert", "Blog");
         }
-        public async Task<IActionResult> ConfirmEmail(string token, string UserId)
+        public async Task<IActionResult> ConfirmEmail(string token, string userID)
         {
-            var result = await _accountService.EmailActivation(token, UserId);
+            var result = await _accountService.EmailActivation(token, userID);
             return RedirectToAction("Login");
         }
         public async Task<IActionResult> ResetPassword(string token, string UserId)
@@ -99,7 +98,7 @@ namespace BlogAppExample.WEB.Controllers
         public async Task<IActionResult> ForgetPassword(string email)
         {
             var result = await _accountService.ForgetPassword(email);
-            return RedirectToAction("");
+            return new EmptyResult();
         }
     }
 }
