@@ -67,6 +67,25 @@ public class AccountManager : IAccountService
 
 
     }
+    public async Task<Response> ChangePassword(PasswordUpdateDto pudto) 
+    {
+
+        var user = await _userManager.FindByIdAsync(pudto.id);
+
+        var control = await _userManager.CheckPasswordAsync(user, pudto.oldPassword);
+        if (control)
+        {
+            var result = await _userManager.ChangePasswordAsync(user, pudto.oldPassword, pudto.newPassword);
+            if (!result.Succeeded) 
+            {
+                return Response.Failure("!!!ERROR!!!Password is not changed");
+             
+            }
+            return Response.Success("Password is changed");
+        }
+        return Response.Failure("!!!ERROR!!!Password is not changed");
+    }
+
 
     public async Task<Response> Login(AppUserLoginDto appUserLoginDto)
     {

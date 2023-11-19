@@ -14,5 +14,8 @@ public class BLLMappingProfile : Profile
             .ReverseMap();
 
         CreateMap<AppUserRegisterDto, AppUser>().ReverseMap();
-    }
+
+        CreateMap<PasswordUpdateDto,AppUser>().ReverseMap();
+    }    
+
 }
