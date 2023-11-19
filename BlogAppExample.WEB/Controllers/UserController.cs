@@ -71,14 +71,24 @@ namespace BlogAppExample.WEB.Controllers
         }
         public async Task<IActionResult> ConfirmEmail(string token, string UserId)
         {
-            var result = await _accountService.EmailActivation(token,UserId);
+            var result = await _accountService.EmailActivation(token, UserId);
             return RedirectToAction("Login");
         }
-       
-        [HttpPost]
-        public async Task<IActionResult> ResetPassword(string newPassword, string id, string token)
+        public async Task<IActionResult> ResetPassword(string token, string UserId)
         {
-            var result = await _accountService.ResetPassword(newPassword, id, token);
+            var result = await _accountService.VerfyPasswordResetInfo(token, UserId);
+            TempData["token"] = token;
+            TempData["UserId"] = UserId;
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string newPassword)
+        {
+            var token = TempData["token"].ToString();
+            var UserId = TempData["UserId"].ToString();
+            var result = await _accountService.ResetPassword(newPassword, UserId, token);
             return RedirectToAction("Login");
         }
         public IActionResult ForgetPassword()
