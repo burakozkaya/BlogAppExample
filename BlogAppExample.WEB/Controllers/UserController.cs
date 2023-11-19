@@ -19,12 +19,20 @@ namespace BlogAppExample.WEB.Controllers
         public async Task<IActionResult> Register(AppUserRegisterDto appUserRegisterDto)
         {
             var result = await _accountService.Register(appUserRegisterDto);
-            if (result.IsSuccess)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Login", "User");
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                ViewBag.IsSuccess = result.IsSuccess;
+                ViewBag.Message = result.Message;
             }
-            ViewBag.IsSuccess = result.IsSuccess;
-            ViewBag.Message = result.Message;
+
+            foreach (var identityError in result.Errors)
+            {
+                ModelState.AddModelError("", identityError.Description);
+            }
             return View();
         }
 
@@ -36,12 +44,19 @@ namespace BlogAppExample.WEB.Controllers
         public async Task<IActionResult> Login(AppUserLoginDto appUserLoginDto)
         {
             var result = await _accountService.Login(appUserLoginDto);
-            if (result.IsSuccess)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Home");
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                ViewBag.IsSuccess = result.IsSuccess;
+                ViewBag.Message = result.Message;
             }
-            ViewBag.IsSuccess = result.IsSuccess;
-            ViewBag.Message = result.Message;
+            foreach (var identityError in result.Errors)
+            {
+                ModelState.AddModelError("", identityError.Description);
+            }
             return View();
         }
 

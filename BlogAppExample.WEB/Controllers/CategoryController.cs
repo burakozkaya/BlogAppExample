@@ -1,9 +1,11 @@
 ﻿using BlogAppExample.BLL.Abstract;
 using BlogAppExample.DTO.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogAppExample.WEB.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;

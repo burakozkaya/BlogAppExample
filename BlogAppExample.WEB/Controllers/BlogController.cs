@@ -1,11 +1,13 @@
 ﻿using BlogAppExample.BLL.Abstract;
 using BlogAppExample.DTO.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace BlogAppExample.WEB.Controllers
 {
+    [Authorize]
     public class BlogController : Controller
     {
         private IBlogContentService _blogContentService;

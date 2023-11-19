@@ -4,38 +4,40 @@
 @model AppUserRegisterDto
 
 <form asp-action="Register" method="post" class="p-3">
-    @{
-        if (@ViewBag.IsSuccess != null)
-        {
-            if (@ViewBag.IsSuccess)
-            {
-                <span class="badge bg-success">@ViewBag.Message.ToString()</span>
-            }
-            else
-            {
-                <span class="badge bg-danger">@ViewBag.Message.ToString()</span>
-            }
-        }
-    }
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="mb-3">
         <label for="Email" class="form-label">Email</label>
         <input asp-for="Email" class="form-control" placeholder="Enter email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label for="UserName" class="form-label">Username</label>
         <input asp-for="UserName" class="form-control" placeholder="Choose a username" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label for="Password" class="form-label">Password</label>
         <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="ConfirmPassword" class="form-label">Confirm Password</label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm your Password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label for="Name" class="form-label">Name</label>
         <input asp-for="Name" class="form-control" placeholder="Enter your name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label for="SurName" class="form-label">Surname</label>
         <input asp-for="SurName" class="form-control" placeholder="Enter your surname" />
+        <span asp-validation-for="SurName" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Register</button>
 </form>
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+}
