@@ -201,19 +201,19 @@ public class AccountManager : IAccountService
         var urlHelper = _urlHelperFactory.GetUrlHelper(_actionContextAccessor.ActionContext);
         return urlHelper.Action("ResetPassword", "User", new { token, UserId }, "https");
     }
-    private async Task<Response> AuthorDetail(string id) 
+    public async Task<Response> AuthorDetail(string id)
     {
-      var author = await _userManager.FindByIdAsync(id);
+        var author = await _userManager.FindByIdAsync(id);
 
-        if (author != null) 
+        if (author != null)
         {
             return Response.Success("Success");
-            
-        
+
+
         }
 
         return Response.Failure("Author is not found");
-    
-    
+
+
     }
 }

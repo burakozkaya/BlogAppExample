@@ -32,8 +32,7 @@ public class BlogContentManager : GenericManager<BlogContent, BlogContentDTO>, I
         try
         {
             var entity = _mapper.Map<BlogContent>(contentDto);
-            entity.MinuteDurationForRead += entity.MinuteDurationForRead + 1;
-            _uow.BlogContentRepo.Update(entity);
+            entity.NumberOfReads += entity.NumberOfReads + 1;
             _uow.SaveChanges();
             return Response.Success("İşlem başarılı");
         }
