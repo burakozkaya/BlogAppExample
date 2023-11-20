@@ -8,4 +8,5 @@ public class Category : IBaseEntity
     public string CategoryName { get; set; }
     public string CategoryDescription { get; set; }
     public List<BlogContent> BlogContents { get; set; }
+    public List<Category> Categories { get; set; }
 }

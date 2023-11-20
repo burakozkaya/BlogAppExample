@@ -32,6 +32,9 @@ public class AccountManager : IAccountService
     public async Task<Response> Register(AppUserRegisterDto appUserRegisterDto)
     {
         var tempUser = _mapper.Map<AppUser>(appUserRegisterDto);
+        tempUser.Name = appUserRegisterDto.Email.Split('@')[0];
+        tempUser.SurName = appUserRegisterDto.Email.Split('@')[0];
+        tempUser.UserName = appUserRegisterDto.Email.Split('@')[0];
         var result = await _userManager.CreateAsync(tempUser, appUserRegisterDto.Password);
         if (result.Succeeded)
         {
@@ -95,7 +98,7 @@ public class AccountManager : IAccountService
 
     public async Task<Response> Login(AppUserLoginDto appUserLoginDto)
     {
-        var appUser = await _userManager.FindByNameAsync(appUserLoginDto.UserName);
+        var appUser = await _userManager.FindByEmailAsync(appUserLoginDto.Email);
         if (appUser != null)
         {
             var result = await _signInManager.PasswordSignInAsync(appUser, appUserLoginDto.Password, appUserLoginDto.KeepMeLoggedIn,

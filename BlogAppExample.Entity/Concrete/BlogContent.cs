@@ -10,6 +10,8 @@ public class BlogContent : IBaseEntity
     public DateTime CreatedDate { get; set; }
     public string AppUserId { get; set; }
     public int CategoryId { get; set; }
+    public int NumberOfReads { get; set; }
+    public int MinuteDurationForRead { get; set; }
 
     //Nav Property
     public Category Category { get; set; }

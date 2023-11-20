@@ -61,6 +61,9 @@ namespace BlogAppExample.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -95,10 +98,13 @@ namespace BlogAppExample.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Surname")
+                    b.Property<string>("SurName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -144,6 +150,12 @@ namespace BlogAppExample.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MinuteDurationForRead")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfReads")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -165,15 +177,25 @@ namespace BlogAppExample.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("CategoryDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -303,6 +325,17 @@ namespace BlogAppExample.DAL.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("BlogAppExample.Entity.Concrete.Category", b =>
+                {
+                    b.HasOne("BlogAppExample.Entity.Concrete.AppUser", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("BlogAppExample.Entity.Concrete.Category", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("CategoryId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("BlogAppExample.Entity.Concrete.AppRole", null)
@@ -357,11 +390,15 @@ namespace BlogAppExample.DAL.Migrations
             modelBuilder.Entity("BlogAppExample.Entity.Concrete.AppUser", b =>
                 {
                     b.Navigation("BlogContents");
+
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("BlogAppExample.Entity.Concrete.Category", b =>
                 {
                     b.Navigation("BlogContents");
+
+                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }
