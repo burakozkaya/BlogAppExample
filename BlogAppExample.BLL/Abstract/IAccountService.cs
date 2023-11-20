@@ -12,5 +12,5 @@ public interface IAccountService
     Task<Response> VerfyPasswordResetInfo(string token, string id);
     Task<Response> ResetPassword(string newPassword, string id, string token);
     Task<Response> Logout();
-    Task<Response> AuthorDetail(string id);
+     Task<List<string>> AuthorDetail(string id);
 }
