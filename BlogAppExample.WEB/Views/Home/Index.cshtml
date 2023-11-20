@@ -4,26 +4,29 @@
 @model IEnumerable<BlogContentDTO>
 
 <div class="text-center">
-    <h1>Blog List</h1>
+    <h1 class="display-4">Blog Listesi</h1>
     @{
-        if(Model!=null){
+        if (Model != null && Model.Any())
+        {
             <div class="row">
                 @foreach (var item in Model)
                 {
                     <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                @item.Title
-                            </div>
+                        <div class="card h-100">
                             <div class="card-body">
-                                <p>@item.Content</p>
-                                <p>Created Date: @item.CreatedDate.ToShortDateString()</p>
-                                <h2>Category: @item.Category.CategoryName</h2>
+                                <h3 class="card-title">@item.Title</h3>
+                                <p class="badge badge-primary bg-info">Kategori: @item.Category.CategoryName</p>
+                                <p class="card-text">@item.Content</p>
+                                <p class="text-muted"><small>Oluşturulma Tarihi: @item.CreatedDate.ToString("dd MMMM yyyy")</small></p>
                             </div>
                         </div>
                     </div>
                 }
             </div>
+        }
+        else
+        {
+            <p>No blog posts found</p>
         }
     }
 </div>

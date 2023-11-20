@@ -4,7 +4,9 @@ using BlogAppExample.BLL.ResponseConcrete;
 using BlogAppExample.DTO.Dtos;
 using BlogAppExample.Entity.Concrete;
 using Microsoft.AspNetCore.Identity;
-using System.Web;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace BlogAppExample.BLL.Concrete;
 
@@ -14,18 +16,25 @@ public class AccountManager : IAccountService
     private readonly SignInManager<AppUser> _signInManager;
     private readonly IMapper _mapper;
     private readonly IEmailService _emailService;
+    private readonly IUrlHelperFactory _urlHelperFactory;
+    private readonly IActionContextAccessor _actionContextAccessor;
 
-    public AccountManager(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper, IEmailService emailService)
+    public AccountManager(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper, IEmailService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _mapper = mapper;
         _emailService = emailService;
+        _urlHelperFactory = urlHelperFactory;
+        _actionContextAccessor = actionContextAccessor;
     }
 
     public async Task<Response> Register(AppUserRegisterDto appUserRegisterDto)
     {
         var tempUser = _mapper.Map<AppUser>(appUserRegisterDto);
+        tempUser.Name = appUserRegisterDto.Email.Split('@')[0];
+        tempUser.SurName = appUserRegisterDto.Email.Split('@')[0];
+        tempUser.UserName = appUserRegisterDto.Email.Split('@')[0];
         var result = await _userManager.CreateAsync(tempUser, appUserRegisterDto.Password);
         if (result.Succeeded)
         {
@@ -60,14 +69,14 @@ public class AccountManager : IAccountService
         var newToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var link = EmailConfirmLinkGenerator(newToken, user.Id);
         var html = GenerateAccountActivationEmail(link);
-
-        _emailService.SendEmail(user.Email, "Account Activation", html);
+        var url = GenerateAccountActivationEmail(html);
+        _emailService.SendEmail(user.Email, "Account Activation", url);
 
         return false;
 
 
     }
-    public async Task<Response> ChangePassword(PasswordUpdateDto pudto) 
+    public async Task<Response> ChangePassword(PasswordUpdateDto pudto)
     {
 
         var user = await _userManager.FindByIdAsync(pudto.id);
@@ -76,10 +85,10 @@ public class AccountManager : IAccountService
         if (control)
         {
             var result = await _userManager.ChangePasswordAsync(user, pudto.oldPassword, pudto.newPassword);
-            if (!result.Succeeded) 
+            if (!result.Succeeded)
             {
                 return Response.Failure("!!!ERROR!!!Password is not changed");
-             
+
             }
             return Response.Success("Password is changed");
         }
@@ -89,7 +98,7 @@ public class AccountManager : IAccountService
 
     public async Task<Response> Login(AppUserLoginDto appUserLoginDto)
     {
-        var appUser = await _userManager.FindByNameAsync(appUserLoginDto.UserName);
+        var appUser = await _userManager.FindByEmailAsync(appUserLoginDto.Email);
         if (appUser != null)
         {
             var result = await _signInManager.PasswordSignInAsync(appUser, appUserLoginDto.Password, appUserLoginDto.KeepMeLoggedIn,
@@ -116,10 +125,9 @@ public class AccountManager : IAccountService
 
         var ResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         var link = ResetPasswordLinkGenerator(ResetToken, user.Id);
-        var mailBody = GenerateResetPasswordEmail(link);
-
-        _emailService.SendEmail(user.Email, "Refresh Password", mailBody);
-        return Response.Success("Referesh is complated ");
+        var url = GenerateAccountActivationEmail(link);
+        _emailService.SendEmail(user.Email, "Reset Password", url);
+        return Response.Success("Refresh completed");
 
     }
 
@@ -133,9 +141,9 @@ public class AccountManager : IAccountService
 
         if (result)
         {
-            return Response.Success("Operation successed");
+            return Response.Success("Operation success");
         }
-        else { return Response.Failure("Operation failled"); }
+        else { return Response.Failure("Operation failed"); }
     }
 
     public async Task<Response> ResetPassword(string newPassword, string id, string token)
@@ -144,13 +152,10 @@ public class AccountManager : IAccountService
         var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
         if (result.Succeeded)
         {
-            return Response.Success("Reset password is complated");
+            return Response.Success("Reset password is completed");
 
         }
         return Response.Failure("Error");
-
-
-
     }
 
     public async Task<Response> Logout()
@@ -160,15 +165,8 @@ public class AccountManager : IAccountService
     }
     private string EmailConfirmLinkGenerator(string token, string UserId)
     {
-        var uriBuilder = new UriBuilder("https://localhost:7163");
-        uriBuilder.Path = $"/User/ConfirmEmail";
-        var queryString = HttpUtility.ParseQueryString(string.Empty);
-        queryString["UserId"] = HttpUtility.UrlEncode(UserId);
-        queryString["token"] = HttpUtility.UrlEncode(token);
-        uriBuilder.Query = queryString.ToString();
-        var data = uriBuilder.ToString();
-
-        return data;
+        var urlHelper = _urlHelperFactory.GetUrlHelper(_actionContextAccessor.ActionContext);
+        return urlHelper.Action("ConfirmEmail", "User", new { token, UserId }, "https");
 
     }
     private string GenerateAccountActivationEmail(string url)
@@ -176,13 +174,9 @@ public class AccountManager : IAccountService
         var html = $@"<html><head></head>
                     
                         <body>
-
-                                    <h2>HOŞGELDİN</h2>
-                            <a href = {url}> Plase onclik the link to activate Account </a>
+                           <h2>Hello To BlogAPP</h2>
+                            <a href = {url}> Please click the link to activate Account </a>
                         </body>
-    
-    
-    
                        </html>";
 
         return html;
@@ -194,31 +188,32 @@ public class AccountManager : IAccountService
         var html = $@"<html><head></head>
                     
                         <body>
-
-                                    <h2>HOŞGELDİN</h2>
-                            <a href = {url}> Referesh Password </a>
+                           <h2>Hello To BlogAPP</h2>
+                            <a href = {url}> Refresh Password </a>
                         </body>
-    
-    
-    
                        </html>";
-
         return html;
 
 
     }
     private string ResetPasswordLinkGenerator(string token, string UserId)
     {
-        var uriBuilder = new UriBuilder("");
-        uriBuilder.Path = $"User/ResetPassword";
-        var querystring = HttpUtility.ParseQueryString(string.Empty);
-        querystring["userID"] = HttpUtility.UrlEncode(UserId);
-        querystring["token"] = HttpUtility.UrlEncode(token);
-        uriBuilder.Query = uriBuilder.ToString();
-        var data = uriBuilder.ToString();
+        var urlHelper = _urlHelperFactory.GetUrlHelper(_actionContextAccessor.ActionContext);
+        return urlHelper.Action("ResetPassword", "User", new { token, UserId }, "https");
+    }
+    private async Task<Response> AuthorDetail(string id) 
+    {
+      var author = await _userManager.FindByIdAsync(id);
 
-        return data;
+        if (author != null) 
+        {
+            return Response.Success("Success");
+            
+        
+        }
 
-
+        return Response.Failure("Author is not found");
+    
+    
     }
 }

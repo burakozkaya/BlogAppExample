@@ -1,7 +1,6 @@
 ﻿using BlogAppExample.BLL.Abstract;
 using BlogAppExample.BLL.ResponseConcrete;
 using BlogAppExample.DTO.Dtos;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogAppExample.WEB.Controllers
@@ -20,7 +19,7 @@ namespace BlogAppExample.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(AppUserRegisterDto appUserRegisterDto)
         {
-            BlogAppExample.BLL.ResponseConcrete.Response result = new Response();
+            Response result = new Response();
             if (ModelState.IsValid)
             {
                 result = await _accountService.Register(appUserRegisterDto);
@@ -46,7 +45,7 @@ namespace BlogAppExample.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(AppUserLoginDto appUserLoginDto)
         {
-            BlogAppExample.BLL.ResponseConcrete.Response result = new Response();
+            Response result = new Response();
             if (ModelState.IsValid)
             {
                 result = await _accountService.Login(appUserLoginDto);
@@ -69,9 +68,9 @@ namespace BlogAppExample.WEB.Controllers
             await _accountService.Logout();
             return RedirectToAction("Insert", "Blog");
         }
-        public async Task<IActionResult> ConfirmEmail(string token, string UserId)
+        public async Task<IActionResult> ConfirmEmail(string token, string userID)
         {
-            var result = await _accountService.EmailActivation(token, UserId);
+            var result = await _accountService.EmailActivation(token, userID);
             return RedirectToAction("Login");
         }
         public async Task<IActionResult> ResetPassword(string token, string UserId)
@@ -91,15 +90,54 @@ namespace BlogAppExample.WEB.Controllers
             var result = await _accountService.ResetPassword(newPassword, UserId, token);
             return RedirectToAction("Login");
         }
+        [HttpGet]
         public IActionResult ForgetPassword()
         {
-            return View();
+            return PartialView("_ForgetPasswordPartial");
         }
+
         [HttpPost]
         public async Task<IActionResult> ForgetPassword(string email)
         {
-            var result = await _accountService.ForgetPassword(email);
-            return RedirectToAction("");
+            if (email != null)
+            {
+                var result = await _accountService.ForgetPassword(email);
+
+                if (result.IsSuccess)
+                {
+                    TempData["SuccessMessage"] = "Your password has been reset successfully.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = result.Message;
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Email can not be empty.";
+            }
+
+            return RedirectToAction("Login", "User");
         }
+        public  async Task<IActionResult> AuthorDetail(string id) 
+        {
+          var result = await _accountService.AuthorDetail(id);
+            if (result.IsSuccess) 
+            {
+                TempData["author"] = result;
+            }
+            else { 
+            TempData["ErrrorMessage"] = "Author is not found";
+            }
+
+            return RedirectToAction("User", "AuthorDetail");
+        
+        }
+
+
+
+
+
+
     }
 }

@@ -26,4 +26,20 @@ public class BlogContentManager : GenericManager<BlogContent, BlogContentDTO>, I
             return Response<IEnumerable<BlogContentDTO>>.Failure("Data retrieval failed: " + ex.Message);
         }
     }
+
+    public int Count(BlogContentDTO contentDto)
+    {
+        try
+        {
+            var entity = _mapper.Map<BlogContent>(contentDto);
+            var temp = _uow.BlogContentRepo.Count(entity);
+            _uow.SaveChanges();
+            return temp;
+        }
+        catch (Exception e)
+        {
+            return -1;
+        }
+
+    }
 }

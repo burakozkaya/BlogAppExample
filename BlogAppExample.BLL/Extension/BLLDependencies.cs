@@ -1,5 +1,7 @@
 ﻿using BlogAppExample.BLL.Abstract;
 using BlogAppExample.BLL.Concrete;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -16,5 +18,8 @@ public static class BLLDependencies
         service.AddScoped(typeof(IAccountService), typeof(AccountManager));
 
 
+        service.AddSingleton(typeof(IUrlHelperFactory), typeof(UrlHelperFactory));
+
+        service.AddSingleton(typeof(IActionContextAccessor), typeof(ActionContextAccessor));
     }
 }

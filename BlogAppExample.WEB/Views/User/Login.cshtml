@@ -1,32 +1,71 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model AppUserLoginDto
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <form asp-action="Login" method="post" class="p-3">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="mb-3">
-                    <label asp-for="UserName" class="form-label">Username</label>
-                    <input asp-for="UserName" class="form-control"/>
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Password" class="form-label">Password</label>
-                    <input asp-for="Password" class="form-control" type="password"/>
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="mb-3 form-check">
-                    <label class="form-check-label" for="KeepMeLoggedIn">Keep me logged in</label>
-                    <input asp-for="KeepMeLoggedIn" class="form-check-input" id="KeepMeLoggedIn"/>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+﻿@model AppUserLoginDto
+
+<div>
+    <form asp-action="Login" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Username</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label">Password</label>
+            <input asp-for="Password" class="form-control" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="mb-3 form-check">
+            <label class="form-check-label" for="KeepMeLoggedIn">Keep me logged in</label>
+            <input asp-for="KeepMeLoggedIn" class="form-check-input" id="KeepMeLoggedIn" />
+            <a href="#" id="forgetPasswordLink" class="ms-5">Forgot your password?</a>
+
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+
+
+<div class="modal fade" id="forgetPasswordModal" tabindex="-1" aria-labelledby="forgetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgetPasswordModalLabel">Şifrenizi mi Unuttunuz?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("_ForgetPasswordPartial")
+            </div>
         </div>
     </div>
 </div>
-@section Scripts
-{
-    <partial name="_ValidationScriptsPartial"/>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $('#forgetPasswordLink').click(function (e) {
+            e.preventDefault();
+            $.get('/User/ForgetPassword', function (data) {
+                $('#forgetPasswordModal .modal-body').html(data);
+                $('#forgetPasswordModal').modal('show');
+            });
+        });
+
+    });
+</script>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+        alert('@TempData["SuccessMessage"]');
+    </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+        alert('@TempData["ErrorMessage"]');
+    </script>
+    }
+
+
+
+    <partial name="_ValidationScriptsPartial" />
 }
