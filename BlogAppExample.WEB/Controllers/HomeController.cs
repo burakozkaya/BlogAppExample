@@ -1,5 +1,6 @@
 ﻿using BlogAppExample.BLL.Abstract;
 using BlogAppExample.WEB.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -31,13 +32,17 @@ namespace BlogAppExample.WEB.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             _blogContentService.GetById(id);
             _blogContentService.IncrementReadCount(id);
             var temp = _blogContentService.GetById(id);
             return View(temp.Data);
+        }
+        public IActionResult AboutUs()
+        {
+            return View();
         }
     }
 }

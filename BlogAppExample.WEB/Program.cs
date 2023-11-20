@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-var conString = builder.Configuration.GetConnectionString("ConnectionStringBurak");
+var conString = builder.Configuration.GetConnectionString("ConnectionStringBurcu");
 builder.Services.AddDALDependencies(conString);
 builder.Services.AddBLLDependencies();
 builder.Services.Configure<EMailOption>(builder.Configuration.GetSection("EmailOption"));
