@@ -29,4 +29,11 @@ public class BlogContentRepository : GenericRepository<BlogContent>, IBlogConten
     {
         return _dbSet.Include(x => x.Category).FirstOrDefault(x => x.Id == id);
     }
+
+    public int Count(BlogContent content)
+    {
+        content.NumberOfReads++;
+        _dbSet.Update(content);
+        return content.NumberOfReads;
+    }
 }

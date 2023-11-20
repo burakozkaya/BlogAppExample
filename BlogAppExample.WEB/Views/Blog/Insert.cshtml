@@ -25,6 +25,11 @@
         </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
+    <div class="mb-7">
+        <label for="MinuteDurationForRead" class="form-label">Content</label>
+        <textarea asp-for="MinuteDurationForRead" class="form-control" placeholder="Enter minute duration for read"></textarea>
+        <span asp-validation-for="MinuteDurationForRead" class="text-danger"></span>
+    </div>
 
     <div class="text-center">
         <button type="submit" class="btn btn-primary">EKle</button>
