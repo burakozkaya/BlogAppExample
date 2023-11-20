@@ -1,10 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using BlogAppExample.BLL.ResponseConcrete
 @model IEnumerable<BlogContentDTO>
 
 <div class="text-center">
-    <h1 class="display-4">Blog Listesi</h1>
+    <h1 class="display-4">Makale Okuma</h1>
     @{
         if (Model != null && Model.Any())
         {
@@ -16,8 +17,13 @@
                             <div class="card-body">
                                 <h3 class="card-title">@item.Title</h3>
                                 <p class="badge badge-primary bg-info">Kategori: @item.Category.CategoryName</p>
-                                <p class="card-text">@item.Content</p>
                                 <p class="text-muted"><small>Oluşturulma Tarihi: @item.CreatedDate.ToString("dd MMMM yyyy")</small></p>
+                                <li><a asp-action="Details" asp-route-id="@item.Id">Okuma için tıkla</a></li>
+
+                                <p><strong>Est time to finish read:</strong> @item.MinuteDurationForRead m</p>
+                                <p><strong>Total number of reads:</strong> @item.NumberOfReads</p>
+                                <p><strong>Name:</strong> @item.Name</p>
+                                <p><strong>Surname:</strong> @item.Surname</p>
                             </div>
                         </div>
                     </div>
@@ -30,3 +36,18 @@
         }
     }
 </div>
+
+<!-- En çok okunan makaleleri görüntülemek için aşağıdaki kodu ekleyin -->
+@if (TempData["MostReaded"] != null)
+{
+    var mostReadedResponse = TempData["MostReaded"] as Response<IEnumerable<BlogContentDTO>>;
+    var mostReadedPosts = mostReadedResponse.Data;
+
+    <h2>En Çok Okunan Makaleler</h2>
+    <ul>
+        @foreach (var post in mostReadedPosts)
+        {
+            <li>@post.Title</li>
+        }
+    </ul>
+}

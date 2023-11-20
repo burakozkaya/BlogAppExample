@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model BlogContentDTO
+@model BlogContentCreateDto
 
 <form asp-action="Insert" method="post" class="p-4 border rounded shadow-sm bg-light">
     <h3 class="text-center mb-4">Add Blog Content</h3>
@@ -26,7 +26,7 @@
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
     <div class="mb-7">
-        <label for="MinuteDurationForRead" class="form-label">Content</label>
+        <label for="MinuteDurationForRead" class="form-label">MinuteDurationForRead</label>
         <textarea asp-for="MinuteDurationForRead" class="form-control" placeholder="Enter minute duration for read"></textarea>
         <span asp-validation-for="MinuteDurationForRead" class="text-danger"></span>
     </div>

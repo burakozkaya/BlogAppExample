@@ -1,0 +1,18 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model BlogContentDTO
+<div class="col-md-4 mb-4">
+    <div class="card h-100">
+        <div class="card-body">
+            <h3 class="card-title">@Model.Title</h3>
+            <p class="badge badge-primary bg-info">Kategori: @Model.Category.CategoryName</p>
+            <p class="text-muted"><small>Oluşturulma Tarihi: @Model.CreatedDate.ToString("dd MMMM yyyy")</small></p>
+            <p class="">Kategori: @Model.Content</p>
+            <p><strong>Est time to finish read:</strong> @Model.MinuteDurationForRead m</p>
+            <p><strong>Total number of reads:</strong> @Model.NumberOfReads</p>
+            <p><strong>Name:</strong> @Model.Name</p>
+            <p><strong>Surname:</strong> @Model.Surname</p>
+        </div>
+    </div>
+</div>
