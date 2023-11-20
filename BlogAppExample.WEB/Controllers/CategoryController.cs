@@ -21,30 +21,82 @@ namespace BlogAppExample.WEB.Controllers
         public IActionResult Insert(CategoryDTO categoryDto)
         {
             var temp = _categoryService.Insert(categoryDto);
-            return View();
+
+            if (temp.IsSuccess)
+            {
+                TempData["SuccessMessage"] = temp.Message;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = temp.Message;
+            }
+
+            return RedirectToAction("CategoryList");
         }
-        [AllowAnonymous]
+
+        [Authorize]
         public IActionResult CategoryList()
         {
             var data = _categoryService.GetAll();
-            return View(data.Data);
+
+            if (!data.IsSuccess)
+            {
+                TempData["ErrorMessage"] = data.Message;
+            }
+
+            return View(data.Data ?? new List<CategoryDTO>());
         }
+
+        [Authorize]
         public IActionResult Update(int id)
         {
             var data = _categoryService.GetById(id);
+
+            if (!data.IsSuccess)
+            {
+                TempData["ErrorMessage"] = data.Message;
+                return RedirectToAction("CategoryList");
+            }
+
             return View(data.Data);
         }
+
         [HttpPost]
+        [Authorize]
         public IActionResult Update(CategoryDTO c)
         {
             var response = _categoryService.Update(c);
-            return RedirectToAction("CategoryList", "Category");
+
+            if (response.IsSuccess)
+            {
+                TempData["SuccessMessage"] = response.Message;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+            }
+
+            return RedirectToAction("CategoryList");
         }
+
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var cat = _categoryService.GetById(id);
-            _categoryService.Delete(cat.Data);
+            var response = _categoryService.Delete(cat.Data);
+
+            if (response.IsSuccess)
+            {
+                TempData["SuccessMessage"] = response.Message;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message;
+            }
+
             return RedirectToAction("CategoryList");
         }
+
+
     }
 }

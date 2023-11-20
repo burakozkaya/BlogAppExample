@@ -2,6 +2,7 @@
 using BlogAppExample.BLL.ResponseConcrete;
 using BlogAppExample.DTO.Dtos;
 using BlogAppExample.Entity.Concrete;
+using BlogAppExample.WEB.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +14,11 @@ namespace BlogAppExample.WEB.Controllers
         private readonly IBlogContentService _blogContentService;
         private readonly UserManager<AppUser> _userManager;
 
-        public UserController(IAccountService accountService, IBlogContentService blogContentService)
+        public UserController(IAccountService accountService, IBlogContentService blogContentService, UserManager<AppUser> userManager)
         {
             _accountService = accountService;
             _blogContentService = blogContentService;
+            _userManager = userManager;
         }
         public IActionResult Register()
         {
@@ -151,21 +153,24 @@ namespace BlogAppExample.WEB.Controllers
         public async Task<IActionResult> UpdateUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            UserUpdateModel model = new UserUpdateModel();
+            model.Id = user.Id;
+            model.Name = user.Name;
+            model.SurName = user.SurName;
+            return View(model);
 
-            return View(user);
-        
         }
         [HttpPost]
-        public async Task<IActionResult>UpdateUser(AppUser appuser,string name,string surname) 
+        public async Task<IActionResult> UpdateUser(AppUser appuser, string name, string surname)
         {
-            var result = await _accountService.UpdateUser(appuser,name,surname);
-            if (result.IsSuccess) 
+            var result = await _accountService.UpdateUser(appuser, name, surname);
+            if (result.IsSuccess)
             {
                 return View(result);
-            
+
             }
             return RedirectToAction("Index");
-        
+
         }
     }
 }

@@ -37,8 +37,8 @@ namespace BlogAppExample.WEB.Controllers
         {
             _blogContentService.GetById(id);
             _blogContentService.IncrementReadCount(id);
-            var temp = _blogContentService.GetById(id);
-            return View(temp.Data);
+            var temp = _blogContentService.GetAll().Data.First(x => x.Id == id);
+            return View(temp);
         }
         public IActionResult AboutUs()
         {

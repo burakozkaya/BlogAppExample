@@ -34,10 +34,20 @@ namespace BlogAppExample.WEB.Controllers
             contentCreateDto.CreatedDate = DateTime.Now;
             contentCreateDto.AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             contentCreateDto.NumberOfReads = 0;
+
             var result = _blogContentService.Insert(contentCreateDto);
+
             if (result.IsSuccess)
-                ViewBag.IsSuccess = result.IsSuccess;
-            return View();
+            {
+                TempData["SuccessMessage"] = "Blog post has been successfully inserted.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Blog post insertion failed: " + result.Message;
+            }
+
+            return RedirectToAction("Index", "Home");
         }
+
     }
 }

@@ -3,6 +3,18 @@
 *@
 @model IEnumerable<CategoryDTO>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <p class="alert alert-danger">@TempData["ErrorMessage"].ToString()</p>
+}
+@{
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert alert-danger">@TempData["SuccessMessage"].ToString()</p>
+    }
+}
+
+<a class="btn btn-outline-primary" asp-controller="Blog" asp-action="Insert"> New Blog</a>
 <div class="container">
     <table class="m-3 table table-bordered">
         <tr>

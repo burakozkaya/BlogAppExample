@@ -2,8 +2,10 @@
 
 @if (TempData["ErrorMessage"] != null)
 {
-    <p class="alert alert-danger">@TempData["ErrorMessage"]</p>
+    <p class="alert alert-danger">@TempData["ErrorMessage"].ToString()</p>
 }
+<a class="btn btn-outline-primary" asp-controller="Blog" asp-action="Insert"> New Blog</a>
+
 else if (Model != null)
 {
     <div class="container mt-5">

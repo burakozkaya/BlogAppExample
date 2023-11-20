@@ -32,17 +32,16 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a class="nav-link nav-item text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link nav-item text-dark" asp-area="" asp-controller="Home" asp-action="Index">Blog List</a>
                         <a class="nav-link nav-item text-dark" asp-controller="Home" asp-action="AboutUs">About Us</a>
                         <a class="nav-link nav-item text-dark" asp-area="" asp-controller="Category" asp-action="CategoryList">Category List</a>
                         @{
                             if (User.Identity.IsAuthenticated)
                             {
-                                <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Insert">Category Ekle</a>
+                                <a class="nav-link nav-item text-dark" asp-area="" asp-controller="Category" asp-action="Insert">Category Ekle</a>
 
                             }
                         }
-                        <a class="nav-link nav-item text-dark" asp-controller="Home" asp-action="Details">Blog List</a>
                         @{
                             if (User.Identity.IsAuthenticated)
                             {
@@ -53,6 +52,7 @@
                         @{
                             if (User.Identity.IsAuthenticated)
                             {
+                                <a class="nav-link nav-item text-dark" asp-area="" asp-controller="User" asp-action="UpdateUser">Kullanıcı Güncelle</a>
                                 <a class="nav-link nav-item text-dark" asp-area="" asp-controller="User" asp-action="Logout">Çıkış Yap</a>
 
                             }
@@ -80,11 +80,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - BlogAppExample.WEB - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
