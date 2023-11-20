@@ -5,6 +5,7 @@ using BlogAppExample.Entity.Concrete;
 using BlogAppExample.WEB.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BlogAppExample.WEB.Controllers
 {
@@ -150,9 +151,10 @@ namespace BlogAppExample.WEB.Controllers
 
             return View();
         }
-        public async Task<IActionResult> UpdateUser(string id)
+        public async Task<IActionResult> UpdateUser()
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
             UserUpdateModel model = new UserUpdateModel();
             model.Id = user.Id;
             model.Name = user.Name;
@@ -166,10 +168,14 @@ namespace BlogAppExample.WEB.Controllers
             var result = await _accountService.UpdateUser(appuser, name, surname);
             if (result.IsSuccess)
             {
-                return View(result);
+                UserUpdateModel model = new UserUpdateModel();
+                model.Name = name;
+                model.SurName = surname;
+                model.Id = appuser.Id;
+                return View(model);
 
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
 
         }
     }
