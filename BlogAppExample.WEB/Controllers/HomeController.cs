@@ -35,10 +35,10 @@ namespace BlogAppExample.WEB.Controllers
         [AllowAnonymous]
         public IActionResult Details(int id)
         {
-            var blogs = _blogContentService.GetAll();
-            var temp = blogs.Data.First(x => x.Id == id);
-            _blogContentService.Count(temp);
-            return View(temp);
+            _blogContentService.GetById(id);
+            _blogContentService.IncrementReadCount(id);
+            var temp = _blogContentService.GetById(id);
+            return View(temp.Data);
         }
         public IActionResult AboutUs()
         {

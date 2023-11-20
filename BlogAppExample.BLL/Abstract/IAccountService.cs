@@ -1,5 +1,6 @@
 ﻿using BlogAppExample.BLL.ResponseConcrete;
 using BlogAppExample.DTO.Dtos;
+using BlogAppExample.Entity.Concrete;
 
 namespace BlogAppExample.BLL.Abstract;
 
@@ -12,5 +13,5 @@ public interface IAccountService
     Task<Response> VerfyPasswordResetInfo(string token, string id);
     Task<Response> ResetPassword(string newPassword, string id, string token);
     Task<Response> Logout();
-    Task<Response> AuthorDetail(string id);
+    Task<Response<AppUserAuthorDto>> AuthorDetail(string id);
 }

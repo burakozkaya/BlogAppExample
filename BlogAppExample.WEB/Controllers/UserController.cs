@@ -8,9 +8,12 @@ namespace BlogAppExample.WEB.Controllers
     public class UserController : Controller
     {
         private readonly IAccountService _accountService;
-        public UserController(IAccountService accountService)
+        private readonly IBlogContentService _blogContentService;
+
+        public UserController(IAccountService accountService, IBlogContentService blogContentService)
         {
             _accountService = accountService;
+            _blogContentService = blogContentService;
         }
         public IActionResult Register()
         {
@@ -124,21 +127,24 @@ namespace BlogAppExample.WEB.Controllers
             var result = await _accountService.AuthorDetail(id);
             if (result.IsSuccess)
             {
-                TempData["author"] = result;
+                var blogsResult = _blogContentService.GetUserBlog(id);
+                if (blogsResult.IsSuccess)
+                {
+                    TempData["AuthorBlogs"] = blogsResult.Data;
+                    return View(result.Data);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = blogsResult.Message;
+                }
             }
             else
             {
-                TempData["ErrrorMessage"] = "Author is not found";
+                TempData["ErrorMessage"] = result.Message;
             }
 
-            return RedirectToAction("User", "AuthorDetail");
-
+            return View();
         }
-
-
-
-
-
 
     }
 }

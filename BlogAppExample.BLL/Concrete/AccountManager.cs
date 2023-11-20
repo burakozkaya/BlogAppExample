@@ -201,19 +201,42 @@ public class AccountManager : IAccountService
         var urlHelper = _urlHelperFactory.GetUrlHelper(_actionContextAccessor.ActionContext);
         return urlHelper.Action("ResetPassword", "User", new { token, UserId }, "https");
     }
-    public async Task<Response> AuthorDetail(string id)
+    public async Task<Response<AppUserAuthorDto>> AuthorDetail(string id)
     {
         var author = await _userManager.FindByIdAsync(id);
 
         if (author != null)
         {
-            return Response.Success("Success");
+
+            AppUserAuthorDto authorDto = new AppUserAuthorDto();
+
+            authorDto.Name = author.Name;
+            authorDto.Surname = author.SurName;
+            authorDto.Description = author.Description;
+
+
+            return Response<AppUserAuthorDto>.Success(authorDto, "Process accepted");
 
 
         }
+        return Response<AppUserAuthorDto>.Failure("Process failed");
 
-        return Response.Failure("Author is not found");
+
 
 
     }
+    public async Task<Response> UpdateUser(AppUser appuser, string name, string surname)
+    {
+        var user = await _userManager.FindByIdAsync(appuser.Id);
+        if (user != null)
+        {
+            appuser.Name = name;
+            appuser.SurName = surname;
+           await _userManager.UpdateAsync(appuser);
+            return Response.Success("Update succesfully");
+        }
+        return Response.Failure("User is not found");
+    }
+
+
 }

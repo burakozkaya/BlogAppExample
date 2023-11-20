@@ -65,4 +65,34 @@ public class BlogContentManager : GenericManager<BlogContent, BlogContentDTO>, I
         var temp = _mapper.Map<IEnumerable<BlogContentDTO>>(_uow.BlogContentRepo.GetMostReaded());
         return Response<IEnumerable<BlogContentDTO>>.Success(temp, "Data retrieved successfully.");
     }
+
+    public Response<IEnumerable<BlogContentDTO>> GetUserBlog(string userId)
+    {
+        try
+        {
+            var entities = _uow.BlogContentRepo.GetUserBlog(userId);
+            var dtos = _mapper.Map<IEnumerable<BlogContentDTO>>(entities);
+            return Response<IEnumerable<BlogContentDTO>>.Success(dtos, "Data retrieved successfully.");
+        }
+        catch (Exception e)
+        {
+            return Response<IEnumerable<BlogContentDTO>>.Failure("Data retrieval failed");
+        }
+
+
+    }
+
+    public Response IncrementReadCount(int blogContentId)
+    {
+        try
+        {
+            _uow.BlogContentRepo.IncrementReadCount(blogContentId);
+            _uow.SaveChanges();
+            return Response.Success("Process success");
+        }
+        catch (Exception e)
+        {
+            return Response.Failure("Process Failed");
+        }
+    }
 }

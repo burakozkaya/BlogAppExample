@@ -11,8 +11,7 @@
             <p class="">Content @Model.Content</p>
             <p><strong>Est time to finish read:</strong> @Model.MinuteDurationForRead m</p>
             <p><strong>Total number of reads:</strong> @Model.NumberOfReads</p>
-            <p><strong>Name:</strong> @Model.Name</p>
-            <p><strong>Surname:</strong> @Model.Surname</p>
+            <p><strong>Author:</strong> <a href="@Url.Action("AuthorDetail", "User", new { id = Model.AppUserId })">@Model.Name @Model.Surname</a></p>
         </div>
     </div>
 </div>
