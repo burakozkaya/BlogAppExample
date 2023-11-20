@@ -35,4 +35,9 @@ public class BlogContentRepository : GenericRepository<BlogContent>, IBlogConten
     {
         return _dbSet.OrderByDescending(x => x.NumberOfReads).Take(10);
     }
+
+    public IEnumerable<BlogContent> GetUserBlog(string userId)
+    {
+        return GetAll().Where(x => x.AppUserId == userId).OrderByDescending(x => x.CreatedDate);
+    }
 }
