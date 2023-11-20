@@ -31,8 +31,9 @@ public class BlogContentManager : GenericManager<BlogContent, BlogContentDTO>, I
     {
         try
         {
+            ++contentDto.NumberOfReads;
             var entity = _mapper.Map<BlogContent>(contentDto);
-            entity.NumberOfReads += entity.NumberOfReads + 1;
+            _uow.BlogContentRepo.Update(entity);
             _uow.SaveChanges();
             return Response.Success("İşlem başarılı");
         }

@@ -28,21 +28,21 @@ namespace BlogAppExample.WEB.Controllers
         [Authorize]
         public IActionResult CategoryList()
         {
-            var data=_categoryService.GetAll();
-            return View(data);
+            var data = _categoryService.GetAll();
+            return View(data.Data);
         }
         [Authorize]
         public IActionResult Update(int id)
         {
             var data = _categoryService.GetById(id);
-            return View("CategoryUpdate",data);
+            return View(data.Data);
         }
         [HttpPost]
         [Authorize]
         public IActionResult Update(CategoryDTO c)
         {
             var category = _categoryService.Update(c);
-            return View();
+            return RedirectToAction("CategoryList", "Category");
         }
         [Authorize]
         public IActionResult Delete(int id)

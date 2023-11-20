@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model List<CategoryDTO>
+@model IEnumerable<CategoryDTO>
 
 <div class="container">
     <table class="m-3 table table-bordered">
@@ -27,8 +27,8 @@
                         if (User.Identity.IsAuthenticated)
                         {
                             <td>
-                                <a class="btn btn-warning" asp-controller="CategoryController" asp-action="CategoryList" asp-route-id="@item.Id"> Güncelle </a>
-                                <a class="btn btn-outline-danger" asp-controller="CategoryController" asp-action="Sil" asp-route-id="@item.Id"> Sil </a>
+                                <a class="btn btn-warning" asp-controller="Category" asp-action="Update" asp-route-id="@item.Id"> Update </a>
+                                <a class="btn btn-outline-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id"> Delete </a>
                             </td>
                         }
                     }
@@ -39,7 +39,7 @@
     @{
         if (User.Identity.IsAuthenticated)
         {
-            <a class="btn btn-outline-primary" asp-controller="CategoryController" asp-action="Insert"> Yeni Departman Ekle </a>
+            <a class="btn btn-outline-primary" asp-controller="Category" asp-action="Insert"> New Category </a>
         }
     }
 
