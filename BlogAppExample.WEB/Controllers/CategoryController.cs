@@ -41,7 +41,7 @@ namespace BlogAppExample.WEB.Controllers
         [Authorize]
         public IActionResult Update(CategoryDTO c)
         {
-            var category = _categoryService.Update(c);
+            var response = _categoryService.Update(c);
             return RedirectToAction("CategoryList", "Category");
         }
         [Authorize]
