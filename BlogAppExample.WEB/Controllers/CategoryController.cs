@@ -48,6 +48,7 @@ namespace BlogAppExample.WEB.Controllers
         public IActionResult Delete(int id)
         {
             var cat = _categoryService.GetById(id);
+            _categoryService.Delete(cat.Data);
             return RedirectToAction("CategoryList");
         }
     }

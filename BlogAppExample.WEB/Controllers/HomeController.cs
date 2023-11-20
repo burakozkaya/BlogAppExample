@@ -34,10 +34,10 @@ namespace BlogAppExample.WEB.Controllers
 
         public IActionResult Details(int id)
         {
-            var blogs = _blogContentService.GetAll();
-            var temp = blogs.Data.First(x => x.Id == id);
-            _blogContentService.Count(temp);
-            return View(temp);
+            _blogContentService.GetById(id);
+            _blogContentService.IncrementReadCount(id);
+            var temp = _blogContentService.GetById(id);
+            return View(temp.Data);
         }
     }
 }

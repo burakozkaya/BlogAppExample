@@ -81,4 +81,18 @@ public class BlogContentManager : GenericManager<BlogContent, BlogContentDTO>, I
 
 
     }
+
+    public Response IncrementReadCount(int blogContentId)
+    {
+        try
+        {
+            _uow.BlogContentRepo.IncrementReadCount(blogContentId);
+            _uow.SaveChanges();
+            return Response.Success("Process success");
+        }
+        catch (Exception e)
+        {
+            return Response.Failure("Process Failed");
+        }
+    }
 }

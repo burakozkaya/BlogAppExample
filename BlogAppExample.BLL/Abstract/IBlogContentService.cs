@@ -10,4 +10,6 @@ public interface IBlogContentService : IGenericService<BlogContent, BlogContentD
     Response Insert(BlogContentCreateDto contentCreateDto);
     Response<IEnumerable<BlogContentDTO>> GetMostReaded();
     Response<IEnumerable<BlogContentDTO>> GetUserBlog(string userId);
+    Response IncrementReadCount(int blogContentId);
+
 }
