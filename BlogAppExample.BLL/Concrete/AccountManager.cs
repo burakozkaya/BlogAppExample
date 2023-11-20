@@ -201,29 +201,29 @@ public class AccountManager : IAccountService
         var urlHelper = _urlHelperFactory.GetUrlHelper(_actionContextAccessor.ActionContext);
         return urlHelper.Action("ResetPassword", "User", new { token, UserId }, "https");
     }
-    public async Task<List<string>> AuthorDetail(string id) 
+    public async Task<Response<AppUserAuthorDto>> AuthorDetail(string id)
     {
         var author = await _userManager.FindByIdAsync(id);
 
         if (author != null)
         {
-           List<string> authorDetail = new List<string> 
-           {
-            $"author Name : {author.Name}",
-            $"author Surname : {author.SurName}",
-            $"author ProfilePicture : {author.ProfilePicture}",
-            $"author Description : {author.Description}"
 
-           };
-            return authorDetail;
-            
-        
+            AppUserAuthorDto authorDto = new AppUserAuthorDto();
+
+            authorDto.Name = author.Name;
+            authorDto.Surname = author.SurName;
+            authorDto.Description = author.Description;
+
+
+            return Response<AppUserAuthorDto>.Success(authorDto, "Process accepted");
+
+
         }
-        return new List<string> {"yazar bulunamadı" };
+        return Response<AppUserAuthorDto>.Failure("Process failed");
 
-        
-    
-    
+
+
+
     }
     public async Task<Response> UpdateUser(AppUser appuser, string name, string surname)
     {
@@ -238,5 +238,5 @@ public class AccountManager : IAccountService
         return Response.Failure("User is not found");
     }
 
-	
+
 }

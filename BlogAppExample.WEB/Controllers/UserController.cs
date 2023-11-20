@@ -8,9 +8,12 @@ namespace BlogAppExample.WEB.Controllers
     public class UserController : Controller
     {
         private readonly IAccountService _accountService;
-        public UserController(IAccountService accountService)
+        private readonly IBlogContentService _blogContentService;
+
+        public UserController(IAccountService accountService, IBlogContentService blogContentService)
         {
             _accountService = accountService;
+            _blogContentService = blogContentService;
         }
         public IActionResult Register()
         {
@@ -119,18 +122,12 @@ namespace BlogAppExample.WEB.Controllers
 
             return RedirectToAction("Login", "User");
         }
-        public  async  Task<IActionResult> AuthorDetail(string id) 
+        public async Task<IActionResult> AuthorDetail(string id)
         {
-          var result = await _accountService.AuthorDetail(id);
-            
-            return View(result);
-        
+            var result = await _accountService.AuthorDetail(id);
+            TempData["AuthorBlogs"] = _blogContentService.GetUserBlog(id);
+            return View(result.Data);
+
         }
-
-
-
-
-
-
     }
 }
