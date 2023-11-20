@@ -203,9 +203,9 @@ public class AccountManager : IAccountService
     }
     public async Task<List<string>> AuthorDetail(string id) 
     {
-      var author = await _userManager.FindByIdAsync(id);
+        var author = await _userManager.FindByIdAsync(id);
 
-        if (author != null) 
+        if (author != null)
         {
            List<string> authorDetail = new List<string> 
            {

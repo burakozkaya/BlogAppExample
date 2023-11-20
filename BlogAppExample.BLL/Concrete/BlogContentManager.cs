@@ -27,19 +27,42 @@ public class BlogContentManager : GenericManager<BlogContent, BlogContentDTO>, I
         }
     }
 
-    public int Count(BlogContentDTO contentDto)
+    public Response Count(BlogContentDTO contentDto)
     {
         try
         {
+            ++contentDto.NumberOfReads;
             var entity = _mapper.Map<BlogContent>(contentDto);
-            var temp = _uow.BlogContentRepo.Count(entity);
+            _uow.BlogContentRepo.Update(entity);
             _uow.SaveChanges();
-            return temp;
+            return Response.Success("İşlem başarılı");
         }
         catch (Exception e)
         {
-            return -1;
+            return Response.Failure("işlem başarısız");
         }
 
+    }
+
+    public Response Insert(BlogContentCreateDto contentCreateDto)
+    {
+        try
+        {
+            var entity = _mapper.Map<BlogContent>(contentCreateDto);
+            _uow.BlogContentRepo.Insert(entity);
+            _uow.SaveChanges();
+            return Response.Success("Insert Success");
+        }
+        catch (Exception e)
+        {
+
+            return Response.Failure("Insert Fail");
+        }
+    }
+
+    public Response<IEnumerable<BlogContentDTO>> GetMostReaded()
+    {
+        var temp = _mapper.Map<IEnumerable<BlogContentDTO>>(_uow.BlogContentRepo.GetMostReaded());
+        return Response<IEnumerable<BlogContentDTO>>.Success(temp, "Data retrieved successfully.");
     }
 }

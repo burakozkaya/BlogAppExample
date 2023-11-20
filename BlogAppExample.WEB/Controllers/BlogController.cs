@@ -29,11 +29,12 @@ namespace BlogAppExample.WEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult Insert(BlogContentDTO blogContentDto)
+        public IActionResult Insert(BlogContentCreateDto contentCreateDto)
         {
-            blogContentDto.CreatedDate = DateTime.Now;
-            blogContentDto.AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = _blogContentService.Insert(blogContentDto);
+            contentCreateDto.CreatedDate = DateTime.Now;
+            contentCreateDto.AppUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            contentCreateDto.NumberOfReads = 0;
+            var result = _blogContentService.Insert(contentCreateDto);
             if (result.IsSuccess)
                 ViewBag.IsSuccess = result.IsSuccess;
             return View();

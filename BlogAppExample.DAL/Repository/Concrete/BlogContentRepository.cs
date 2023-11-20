@@ -15,6 +15,7 @@ public class BlogContentRepository : GenericRepository<BlogContent>, IBlogConten
     {
         return _dbSet
             .Include(x => x.Category)
+            .Include(x => x.AppUser)
             .ToList();
     }
 
@@ -27,13 +28,11 @@ public class BlogContentRepository : GenericRepository<BlogContent>, IBlogConten
 
     public override BlogContent? GetById(int id)
     {
-        return _dbSet.Include(x => x.Category).FirstOrDefault(x => x.Id == id);
+        return _dbSet.Include(x => x.Category).Include(x => x.AppUser).FirstOrDefault(x => x.Id == id);
     }
 
-    public int Count(BlogContent content)
+    public IEnumerable<BlogContent> GetMostReaded()
     {
-        content.NumberOfReads++;
-        _dbSet.Update(content);
-        return content.NumberOfReads;
+        return _dbSet.OrderByDescending(x => x.NumberOfReads).Take(10);
     }
 }

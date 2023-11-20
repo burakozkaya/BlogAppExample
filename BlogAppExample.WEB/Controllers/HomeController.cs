@@ -18,6 +18,7 @@ namespace BlogAppExample.WEB.Controllers
 
         public IActionResult Index()
         {
+            TempData["MostReaded"] = _blogContentService.GetMostReaded();
             var blogs = _blogContentService.GetAll();
             return View(blogs.Data);
         }
@@ -29,6 +30,14 @@ namespace BlogAppExample.WEB.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Details(int id)
+        {
+            var blogs = _blogContentService.GetAll();
+            var temp = blogs.Data.First(x => x.Id == id);
+            _blogContentService.Count(temp);
+            return View(temp);
         }
     }
 }
