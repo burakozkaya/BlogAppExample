@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model CategoryDTO
+
+@{
+    var item = Model;
+}
+<div class="container">
+    <div class="row">
+        <form asp-action="Update" asp-route-id="@item.Id" method="post">
+            <div class="col-12">
+                <b>Category Id</b>
+                <input type="text" name="Id" value="@item.Id" />
+            </div>
+            <br />
+            <div class="col-12">
+                <b>Category Name</b>
+                <input type="text" name="CategoryName" value="@item.CategoryName" />
+            </div>
+            <br />
+            <div class="col-12">
+                <b>Category Description</b>
+                <input type="text" name="CategoryDescription" value="@item.CategoryDescription" />
+            </div>
+            <br />
+            <button class="btn btn-warning" type="submit">Update</button>
+        </form>
+    </div>
+    <br />
+</div>
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+}

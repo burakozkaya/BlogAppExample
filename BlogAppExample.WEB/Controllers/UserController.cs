@@ -119,6 +119,20 @@ namespace BlogAppExample.WEB.Controllers
 
             return RedirectToAction("Login", "User");
         }
+        public  async Task<IActionResult> AuthorDetail(string id) 
+        {
+          var result = await _accountService.AuthorDetail(id);
+            if (result.IsSuccess) 
+            {
+                TempData["author"] = result;
+            }
+            else { 
+            TempData["ErrrorMessage"] = "Author is not found";
+            }
+
+            return RedirectToAction("User", "AuthorDetail");
+        
+        }
 
 
 

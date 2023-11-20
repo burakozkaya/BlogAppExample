@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<CategoryDTO>
+
+<div class="container">
+    <table class="m-3 table table-bordered">
+        <tr>
+            <th>Category Id</th>
+            <th>Category Name</th>
+            <th>Category Description</th>
+            @{
+                if (User.Identity.IsAuthenticated)
+                {
+                    <th>Process</th>
+                }
+            }
+        </tr>
+        @{
+            foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.CategoryName</td>
+                    <td>@item.CategoryDescription</td>
+                    @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            <td>
+                                <a class="btn btn-warning" asp-controller="CategoryController" asp-action="CategoryList" asp-route-id="@item.Id"> Güncelle </a>
+                                <a class="btn btn-outline-danger" asp-controller="CategoryController" asp-action="Sil" asp-route-id="@item.Id"> Sil </a>
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        }
+    </table>
+    @{
+        if (User.Identity.IsAuthenticated)
+        {
+            <a class="btn btn-outline-primary" asp-controller="CategoryController" asp-action="Insert"> Yeni Departman Ekle </a>
+        }
+    }
+
+</div>
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+}
