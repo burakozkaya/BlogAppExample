@@ -1,6 +1,10 @@
 ﻿@model AppUserAuthorDto
 
-@if (Model != null)
+@if (TempData["ErrorMessage"] != null)
+{
+    <p class="alert alert-danger">@TempData["ErrorMessage"]</p>
+}
+else if (Model != null)
 {
     <div class="container mt-5">
         <div class="row">
