@@ -40,6 +40,7 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
         try
         {
             var Tentity = _mapper.Map<T>(dto);
+
             _uow.GetRepository<T>().Update(Tentity);
             _uow.SaveChanges();
             return Response.Success("Update success");

@@ -40,4 +40,12 @@ public class BlogContentRepository : GenericRepository<BlogContent>, IBlogConten
     {
         return GetAll().Where(x => x.AppUserId == userId).OrderByDescending(x => x.CreatedDate);
     }
+    public void IncrementReadCount(int blogContentId)
+    {
+        var blogContent = _dbSet.Find(blogContentId);
+
+        blogContent.NumberOfReads++;
+
+    }
+
 }

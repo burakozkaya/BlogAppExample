@@ -1,6 +1,10 @@
 ﻿@model AppUserAuthorDto
 
-@if (Model != null)
+@if (TempData["ErrorMessage"] != null)
+{
+    <p class="alert alert-danger">@TempData["ErrorMessage"]</p>
+}
+else if (Model != null)
 {
     <div class="container mt-5">
         <div class="row">
@@ -17,13 +21,28 @@ else
 {
     <p class="mt-5 text-center">Yazar bulunamadı.</p>
 }
-@if (TempData["AuthorBlogs"] != null)
-{
-    <h2>Yazarın Yazdığı Bloglar</h2>
-    <ul>
-        @foreach (var blog in TempData["AuthorBlogs"] as IEnumerable<BlogContentDTO>)
+
+<div class="container mt-5">
+    <div class="row">
+        @if (TempData["AuthorBlogs"] != null)
         {
-            <li>@blog.Title</li>
+            <h2>Yazarın Yazdığı Bloglar</h2>
+            @foreach (var blog in TempData["AuthorBlogs"] as IEnumerable<BlogContentDTO>)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">@blog.Title</h3>
+                            <p class="badge badge-primary bg-info">Kategori: @blog.Category.CategoryName</p>
+                            <p class="text-muted"><small>Oluşturulma Tarihi: @blog.CreatedDate.ToString("dd MMMM yyyy")</small></p>
+                            <p class="">Content: @blog.Content</p>
+                            <p><strong>Est time to finish read:</strong> @blog.MinuteDurationForRead m</p>
+                            <p><strong>Total number of reads:</strong> @blog.NumberOfReads</p>
+                            <p><strong>Author:</strong> @blog.Name @blog.Surname</p>
+                        </div>
+                    </div>
+                </div>
+            }
         }
-    </ul>
-}
+    </div>
+</div>

@@ -128,9 +128,25 @@ namespace BlogAppExample.WEB.Controllers
         public async Task<IActionResult> AuthorDetail(string id)
         {
             var result = await _accountService.AuthorDetail(id);
-            TempData["AuthorBlogs"] = _blogContentService.GetUserBlog(id);
-            return View(result.Data);
+            if (result.IsSuccess)
+            {
+                var blogsResult = _blogContentService.GetUserBlog(id);
+                if (blogsResult.IsSuccess)
+                {
+                    TempData["AuthorBlogs"] = blogsResult.Data;
+                    return View(result.Data);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = blogsResult.Message;
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.Message;
+            }
 
+            return View();
         }
         public async Task<IActionResult> UpdateUser(string id)
         {
