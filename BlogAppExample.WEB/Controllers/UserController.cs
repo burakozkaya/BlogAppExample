@@ -19,7 +19,7 @@ namespace BlogAppExample.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(AppUserRegisterDto appUserRegisterDto)
         {
-            BlogAppExample.BLL.ResponseConcrete.Response result = new Response();
+            Response result = new Response();
             if (ModelState.IsValid)
             {
                 result = await _accountService.Register(appUserRegisterDto);
@@ -45,7 +45,7 @@ namespace BlogAppExample.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(AppUserLoginDto appUserLoginDto)
         {
-            BlogAppExample.BLL.ResponseConcrete.Response result = new Response();
+            Response result = new Response();
             if (ModelState.IsValid)
             {
                 result = await _accountService.Login(appUserLoginDto);
@@ -90,16 +90,40 @@ namespace BlogAppExample.WEB.Controllers
             var result = await _accountService.ResetPassword(newPassword, UserId, token);
             return RedirectToAction("Login");
         }
+        [HttpGet]
         public IActionResult ForgetPassword()
         {
-            return View();
+            return PartialView("_ForgetPasswordPartial");
         }
+
         [HttpPost]
         public async Task<IActionResult> ForgetPassword(string email)
         {
-            //todo forget password'den sonra gidilcek yer ayarlancak
-            var result = await _accountService.ForgetPassword(email);
-            return View();
+            if (email != null)
+            {
+                var result = await _accountService.ForgetPassword(email);
+
+                if (result.IsSuccess)
+                {
+                    TempData["SuccessMessage"] = "Your password has been reset successfully.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = result.Message;
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Email can not be empty.";
+            }
+
+            return RedirectToAction("Login", "User");
         }
+
+
+
+
+
+
     }
 }

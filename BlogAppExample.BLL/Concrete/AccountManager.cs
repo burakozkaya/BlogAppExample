@@ -123,8 +123,8 @@ public class AccountManager : IAccountService
         var ResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         var link = ResetPasswordLinkGenerator(ResetToken, user.Id);
         var url = GenerateAccountActivationEmail(link);
-        _emailService.SendEmail(user.Email, "Refresh Password", url);
-        return Response.Success("Referesh is complated ");
+        _emailService.SendEmail(user.Email, "Reset Password", url);
+        return Response.Success("Refresh completed");
 
     }
 
@@ -153,9 +153,6 @@ public class AccountManager : IAccountService
 
         }
         return Response.Failure("Error");
-
-
-
     }
 
     public async Task<Response> Logout()
@@ -174,13 +171,9 @@ public class AccountManager : IAccountService
         var html = $@"<html><head></head>
                     
                         <body>
-
-                                    <h2>Hello To BlogAPP</h2>
+                           <h2>Hello To BlogAPP</h2>
                             <a href = {url}> Please click the link to activate Account </a>
                         </body>
-    
-    
-    
                        </html>";
 
         return html;
@@ -192,15 +185,10 @@ public class AccountManager : IAccountService
         var html = $@"<html><head></head>
                     
                         <body>
-
-                                    <h2>Hello To BlogAPP</h2>
+                           <h2>Hello To BlogAPP</h2>
                             <a href = {url}> Refresh Password </a>
                         </body>
-    
-    
-    
                        </html>";
-
         return html;
 
 
