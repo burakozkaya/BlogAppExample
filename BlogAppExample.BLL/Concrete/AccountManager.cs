@@ -225,6 +225,18 @@ public class AccountManager : IAccountService
     
     
     }
+    public async Task<Response> UpdateUser(AppUser appuser, string name, string surname)
+    {
+        var user = await _userManager.FindByIdAsync(appuser.Id);
+        if (user != null)
+        {
+            appuser.Name = name;
+            appuser.SurName = surname;
+           await _userManager.UpdateAsync(appuser);
+            return Response.Success("Update succesfully");
+        }
+        return Response.Failure("User is not found");
+    }
 
 	
 }
