@@ -1,6 +1,8 @@
 ﻿using BlogAppExample.BLL.Abstract;
 using BlogAppExample.BLL.ResponseConcrete;
 using BlogAppExample.DTO.Dtos;
+using BlogAppExample.Entity.Concrete;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogAppExample.WEB.Controllers
@@ -9,6 +11,7 @@ namespace BlogAppExample.WEB.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IBlogContentService _blogContentService;
+        private readonly UserManager<AppUser> _userManager;
 
         public UserController(IAccountService accountService, IBlogContentService blogContentService)
         {
@@ -145,6 +148,24 @@ namespace BlogAppExample.WEB.Controllers
 
             return View();
         }
+        public async Task<IActionResult> UpdateUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
 
+            return View(user);
+        
+        }
+        [HttpPost]
+        public async Task<IActionResult>UpdateUser(AppUser appuser,string name,string surname) 
+        {
+            var result = await _accountService.UpdateUser(appuser,name,surname);
+            if (result.IsSuccess) 
+            {
+                return View(result);
+            
+            }
+            return RedirectToAction("Index");
+        
+        }
     }
 }

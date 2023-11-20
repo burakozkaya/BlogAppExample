@@ -14,4 +14,5 @@ public interface IAccountService
     Task<Response> ResetPassword(string newPassword, string id, string token);
     Task<Response> Logout();
     Task<Response<AppUserAuthorDto>> AuthorDetail(string id);
+    Task<Response> UpdateUser(AppUser appuser, string name, string surname);
 }
