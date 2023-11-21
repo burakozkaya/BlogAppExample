@@ -21,9 +21,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IBase
         _dbSet.Add(entity);
     }
 
-    public void Delete(T entity)
+    public void Delete(int Id)
     {
-        _dbSet.Remove(entity);
+        _dbSet.Remove(GetById(Id) ?? throw new InvalidOperationException());
     }
 
     public void Update(T entity)

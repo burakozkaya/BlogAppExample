@@ -19,17 +19,17 @@
         <form asp-action="UpdateUser" method="post">
             <div class="col-12">
                 <b>User Id</b>
-                <input type="hidden" name="Id" asp-for="@Model.Id" />
+                <input type="hidden" asp-for="@Model.Id" />
             </div>
             <br />
             <div class="col-12">
                 <b>Name</b>
-                <input type="text" name="Name" asp-for="@item.Name" />
+                <input type="text"  asp-for="@Model.Name" />
             </div>
             <br />
             <div class="col-12">
                 <b>SurName</b>
-                <input type="text" name="SurName" asp-for="@item.SurName" />
+                <input type="text"  asp-for="@Model.SurName" />
             </div>
             <br />
             <button class="btn btn-warning" type="submit">Update</button>

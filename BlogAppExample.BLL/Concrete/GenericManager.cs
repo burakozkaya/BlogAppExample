@@ -51,12 +51,11 @@ public class GenericManager<T, TDto> : IGenericService<T, TDto>
         }
     }
 
-    public Response Delete(TDto dto)
+    public Response Delete(int Id)
     {
         try
         {
-            var Tentity = _mapper.Map<T>(dto);
-            _uow.GetRepository<T>().Delete(Tentity);
+            _uow.GetRepository<T>().Delete(Id);
             _uow.SaveChanges();
             return Response.Success("Delete success");
         }

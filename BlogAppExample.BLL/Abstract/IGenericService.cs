@@ -11,7 +11,7 @@ public interface IGenericService<T, TDto>
 {
     Response Insert(TDto dto);
     Response Update(TDto dto);
-    Response Delete(TDto dto);
+    Response Delete(int Id);
     Response<TDto> GetById(int id);
     Response<IEnumerable<TDto>> GetByPredicate(Expression<Func<T, bool>> predicate);
     Response<IEnumerable<TDto>> GetAll();

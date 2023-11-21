@@ -163,20 +163,13 @@ namespace BlogAppExample.WEB.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateUser(AppUser appuser, string name, string surname)
+        public async Task<IActionResult> UpdateUser(UserUpdateModel model)
         {
-            var result = await _accountService.UpdateUser(appuser, name, surname);
+
+            var result = await _accountService.UpdateUser(model.Id, model.Name, model.SurName);
             if (result.IsSuccess)
-            {
-                UserUpdateModel model = new UserUpdateModel();
-                model.Name = name;
-                model.SurName = surname;
-                model.Id = appuser.Id;
-                return View(model);
-
-            }
+                return View();
             return RedirectToAction("Login");
-
         }
     }
 }

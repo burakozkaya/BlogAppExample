@@ -225,15 +225,16 @@ public class AccountManager : IAccountService
 
 
     }
-    public async Task<Response> UpdateUser(AppUser appuser, string name, string surname)
+    public async Task<Response> UpdateUser(string appuser, string name, string surname)
     {
-        var user = await _userManager.FindByIdAsync(appuser.Id);
-        if (user != null)
+        var findUser = await _userManager.FindByIdAsync(appuser);
+        if (findUser != null)
         {
-            appuser.Name = name;
-            appuser.SurName = surname;
-           await _userManager.UpdateAsync(appuser);
-            return Response.Success("Update succesfully");
+            findUser.Name = name;
+            findUser.SurName = surname;
+            var result = await _userManager.UpdateAsync(findUser);
+            if (result.Succeeded)
+                return Response.Success("Update succesfully");
         }
         return Response.Failure("User is not found");
     }

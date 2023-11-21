@@ -82,8 +82,7 @@ namespace BlogAppExample.WEB.Controllers
         [Authorize]
         public IActionResult Delete(int id)
         {
-            var cat = _categoryService.GetById(id);
-            var response = _categoryService.Delete(cat.Data);
+            var response = _categoryService.Delete(id);
 
             if (response.IsSuccess)
             {
