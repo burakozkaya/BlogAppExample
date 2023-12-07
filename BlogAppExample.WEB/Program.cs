@@ -6,7 +6,11 @@ using BlogAppExample.DTO.Extension;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(x =>
+    {
+        x.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    }
+);
 var conString = builder.Configuration.GetConnectionString("ConnectionStringBurak");
 builder.Services.AddDALDependencies(conString);
 builder.Services.AddBLLDependencies();
